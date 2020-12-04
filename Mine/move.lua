@@ -56,7 +56,7 @@ local function right()
 		error()
 	end
 	facing = ( facing + 1 ) % 4
-	turtle.turnLeft()
+	turtle.turnRight()
 end
 
 local function look(d)
@@ -76,34 +76,36 @@ local function findDir()
 	move()
 	x2, _, z2 = gps.locate()
 	if x1 == x2 then
-		if (z1 > z2) then facing = 2 else facing = 0 end
+		if (z1 > z2) then facing = 0 else facing = 2 end
 	else
 		if (x1 > x2) then facing = 3 else facing = 1 end
 	end
+	print(facing)
 end
 
 local function changex(x)
-	if x > 0 then
+	if x < 0 then
 		look(1)
-	else
+	elseif x > 0 then
 		look(3)
 	end
 	forward(math.abs(x))
 end
 
 local function changey(y)
+	print("Y: "..y)
 	if y < 0 then
-		down(y)
-	else
+		down(math.abs(y))
+	elseif y > 0 then
 		up(y)
 	end
 end
 
 local function changez(z)
 	if z < 0 then
-		look(0)
-	else
 		look(2)
+	elseif z > 0 then
+		look(0)
 	end
 	forward(math.abs(z))
 end
@@ -112,12 +114,29 @@ local function goto(x, y, z)
 	if facing == -1 then
 		findDir()
 	end
-	y = y or 100
 	currx, curry, currz = gps.locate()
-	changey(curry - y)
+	if currx == x and curry == y and currz == z then
+		return
+	end
+	if travelY ~= -1 then
+		changey(travelY - curry)
+	else
+		changey(y - curry)
+	end
 	changex(currx - x)
 	changez(currz - z)
-	changey(y - curry)
+	if travelY ~= -1 then
+		changey(y - travelY)
+	end
 end
 
-return { goto = goto }
+return {
+	goto = goto,
+	findDir = findDir,
+	setTravelY = setTravelY,
+	forward = forward,
+	up = up,
+	down = down,
+	left = left,
+	right = right,
+}
