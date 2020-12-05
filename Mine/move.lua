@@ -83,6 +83,18 @@ local function findDir()
 	print(facing)
 end
 
+local function getDir()
+	if facing == -1 then
+		findDir()
+		left()
+		left()
+		forward(1)
+		right()
+		right()
+	end
+	return facing
+end
+
 local function changex(x)
 	if x < 0 then
 		look(1)
@@ -133,6 +145,7 @@ end
 return {
 	goto = goto,
 	findDir = findDir,
+	getDir = getDir,
 	setTravelY = setTravelY,
 	forward = forward,
 	up = up,
