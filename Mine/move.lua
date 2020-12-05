@@ -24,18 +24,21 @@ local function moveDown()
 end
 
 local function forward(n)
+	n = n or 1
 	for i = 1, n, 1 do
 		move()
 	end
 end
 
 local function up(n)
+	n = n or 1
 	for i = 1, n, 1 do
 		moveUp()
 	end
 end
 
 local function down(n)
+	n = n or 1
 	for i = 1, n, 1 do
 		moveDown()
 	end
@@ -80,7 +83,6 @@ local function findDir()
 	else
 		if (x1 > x2) then facing = 3 else facing = 1 end
 	end
-	print(facing)
 end
 
 local function getDir()
@@ -105,7 +107,6 @@ local function changex(x)
 end
 
 local function changey(y)
-	print("Y: "..y)
 	if y < 0 then
 		down(math.abs(y))
 	elseif y > 0 then
