@@ -153,4 +153,5 @@ return {
 	down = down,
 	left = left,
 	right = right,
+	look = look
 }
